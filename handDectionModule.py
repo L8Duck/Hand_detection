@@ -23,7 +23,6 @@ class handDetector():
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)  # draw line in multiple hands
         return img
 
-    #havent done yet, need output of cx,cy for application
     def findPostion(self,img, handNo=0, draw=True):
         lmList = []
         if self.results.multi_hand_landmarks:
@@ -32,11 +31,6 @@ class handDetector():
                     height, width, channel = img.shape
                     cx, cy = int(lm.x * width), int(lm.y * height)
                     lmList.append([id, cx, cy])
-                    # if id == handNo:
-                    #     cv2.circle(img, (cx, cy), 25, (225, 0, 225), cv2.FILLED)
-        # else:
-        #     print('not detecting hand')
-
         return lmList
     def countNumber(self,img,lmList,show=True):
         tipIds = [4, 8, 12, 16, 20]
@@ -81,9 +75,8 @@ def main():
         cTime = time.time()
         fps = 1/(cTime-pTime)
         pTime = cTime
+        cv2.putText(img, "fps: " + str(int(fps)), (10,40),cv2.FONT_HERSHEY_PLAIN,2,(100, 250, 250),2)
 
-        cv2.putText(img, "fps: " + str(int(fps)), (10,40),cv2.FONT_HERSHEY_PLAIN,2,(255,255,255),2)
-        # cv2.putText(img,"sum:"+ str(sum(fingers)), (10, 450), cv2.FONT_HERSHEY_PLAIN, 2, (225, 0, 225), 3)
         cv2.imshow("Image",img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
